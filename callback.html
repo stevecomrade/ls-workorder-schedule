@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Workorder Schedule — Authorizing…</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f4f4f0;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 40px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      text-align: center;
+    }
+    .icon { font-size: 40px; margin-bottom: 16px; }
+    h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #111; }
+    p { font-size: 14px; color: #6b7280; line-height: 1.6; }
+    .error { color: #dc2626; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon" id="icon">⏳</div>
+    <h2 id="title">Completing authorization…</h2>
+    <p id="message">Please wait while we connect to Lightspeed.</p>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code   = params.get('code');
+    const error  = params.get('error');
+
+    if (error) {
+      document.getElementById('icon').textContent    = '❌';
+      document.getElementById('title').textContent   = 'Authorization Failed';
+      document.getElementById('message').textContent = error;
+      document.getElementById('message').className   = 'error';
+    } else if (code) {
+      // Send the code back to the extension that opened this window
+      if (window.opener) {
+        window.opener.postMessage({ type: 'LS_OAUTH_CODE', code: code }, '*');
+        document.getElementById('icon').textContent    = '✅';
+        document.getElementById('title').textContent   = 'Connected!';
+        document.getElementById('message').textContent = 'Authorization successful. This window will close automatically.';
+        setTimeout(() => window.close(), 1500);
+      } else {
+        // Fallback — show the code manually
+        document.getElementById('icon').textContent    = '✅';
+        document.getElementById('title').textContent   = 'Authorization Code';
+        document.getElementById('message').textContent = 'Copy this code: ' + code;
+      }
+    } else {
+      document.getElementById('icon').textContent    = '⏳';
+      document.getElementById('title').textContent   = 'Waiting…';
+      document.getElementById('message').textContent = 'This page is the OAuth callback for the Lightspeed Workorder Schedule extension.';
+    }
+  </script>
+</body>
+</html>
