@@ -26,13 +26,39 @@
     h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #111; }
     p { font-size: 14px; color: #6b7280; line-height: 1.6; }
     .error { color: #dc2626; }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: monospace;
+      margin: 12px 0;
+      box-sizing: border-box;
+    }
+    button {
+      background: #1a1a2e;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .copied { background: #16a34a; }
   </style>
 </head>
 <body>
   <div class="card">
     <div class="icon" id="icon">⏳</div>
     <h2 id="title">Completing authorization…</h2>
-    <p id="message">Please wait while we connect to Lightspeed.</p>
+    <p id="message">Please wait.</p>
+    <div id="manual-copy" style="display:none;">
+      <input type="text" id="code-display" readonly>
+      <button onclick="copyCode()" id="copy-btn">Copy Code</button>
+      <p style="margin-top:12px;font-size:12px;">Paste this into the extension popup's Refresh Token field.</p>
+    </div>
   </div>
 
   <script>
@@ -46,23 +72,36 @@
       document.getElementById('message').textContent = error;
       document.getElementById('message').className   = 'error';
     } else if (code) {
-      // Send the code back to the extension that opened this window
-      if (window.opener) {
-        window.opener.postMessage({ type: 'LS_OAUTH_CODE', code: code }, '*');
-        document.getElementById('icon').textContent    = '✅';
-        document.getElementById('title').textContent   = 'Connected!';
-        document.getElementById('message').textContent = 'Authorization successful. This window will close automatically.';
-        setTimeout(() => window.close(), 1500);
-      } else {
-        // Fallback — show the code manually
-        document.getElementById('icon').textContent    = '✅';
-        document.getElementById('title').textContent   = 'Authorization Code';
-        document.getElementById('message').textContent = 'Copy this code: ' + code;
-      }
+      document.getElementById('icon').textContent    = '✅';
+      document.getElementById('title').textContent   = 'Connected!';
+      document.getElementById('message').textContent = 'Sending authorization to extension…';
+
+      // Try to send to extension via runtime messaging
+      // The extension ID is embedded via a meta tag approach —
+      // we just show the code for manual entry as the reliable fallback
+      showManualEntry(code);
     } else {
       document.getElementById('icon').textContent    = '⏳';
       document.getElementById('title').textContent   = 'Waiting…';
       document.getElementById('message').textContent = 'This page is the OAuth callback for the Lightspeed Workorder Schedule extension.';
+    }
+
+    function showManualEntry(code) {
+      document.getElementById('icon').textContent    = '✅';
+      document.getElementById('title').textContent   = 'Almost done!';
+      document.getElementById('message').textContent = 'Copy this authorization code and paste it into the extension popup:';
+      document.getElementById('code-display').value  = code;
+      document.getElementById('manual-copy').style.display = 'block';
+    }
+
+    function copyCode() {
+      const input = document.getElementById('code-display');
+      input.select();
+      document.execCommand('copy');
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = '✓ Copied!';
+      btn.className = 'copied';
+      setTimeout(() => { btn.textContent = 'Copy Code'; btn.className = ''; }, 2500);
     }
   </script>
 </body>
