@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy — Workorder Schedule for Lightspeed</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 680px; margin: 60px auto; padding: 0 24px; color: #1e293b; line-height: 1.7; }
-    h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
-    h2 { font-size: 18px; font-weight: 700; margin-top: 32px; margin-bottom: 8px; }
-    p  { margin-bottom: 16px; color: #374151; }
-    .updated { font-size: 13px; color: #94a3b8; margin-bottom: 32px; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 640px; margin: 40px auto; padding: 20px; color: #1e293b; line-height: 1.7; }
+    h1 { font-size: 22px; margin-bottom: 4px; }
+    h2 { font-size: 16px; margin-top: 28px; margin-bottom: 8px; }
+    p { font-size: 14px; margin-bottom: 12px; }
+    .updated { font-size: 13px; color: #64748b; margin-bottom: 24px; }
+    a { color: #0f3460; }
   </style>
 </head>
 <body>
@@ -22,15 +23,20 @@
   <p>The extension accesses workorder data from your Lightspeed Retail account via the official Lightspeed API. This includes workorder details, customer names, employee names, and workorder line items. This data is used solely to display your workorder schedule within the extension.</p>
 
   <h2>How data is stored</h2>
-  <p>All data is processed locally in your browser. No workorder data, customer data, or any other Lightspeed data is transmitted to any third-party server or stored outside your browser. API credentials (your Account ID, Client ID, Client Secret, and OAuth tokens) are stored locally in your browser's extension storage and are never sent to anyone other than Lightspeed's API servers.</p>
+  <p>All workorder and customer data is processed locally in your browser. No workorder data, customer data, or any other Lightspeed business data is transmitted to any third-party server or stored outside your browser. Your Account ID and OAuth tokens are stored locally in your browser's extension storage.</p>
 
-  <h2>OAuth credentials</h2>
-  <p>The extension uses OAuth 2.0 to authenticate with Lightspeed on your behalf. Your credentials are stored locally in browser storage and used only to make API requests to Lightspeed. The OAuth callback page is hosted on GitHub Pages solely to receive the authorization code and display it to you — no data is logged or stored by that page.</p>
+  <h2>OAuth credentials and token exchange</h2>
+  <p>The extension uses OAuth 2.0 to authenticate with Lightspeed on your behalf. When you authorize the extension, your temporary authorization code and refresh token are sent to a Cloudflare Worker (<code>ls-oauth-proxy.ls-proxy.workers.dev</code>) operated by the extension developer. This Worker exists solely to securely exchange tokens with Lightspeed's OAuth server. The API client secret is stored on the Worker so that it never needs to be included in the extension code.</p>
+  <p>The Worker does not log, store, or retain any data. It forwards your authorization code or refresh token to Lightspeed, receives the access token, and returns it to the extension. No other data passes through the Worker.</p>
+  <p>The OAuth callback page hosted on GitHub Pages is used to receive the authorization code during the manual authentication flow. No data is logged or stored by that page.</p>
 
   <h2>Third parties</h2>
-  <p>The extension communicates only with Lightspeed's API servers (api.lightspeedapp.com and cloud.lightspeedapp.com). No data is shared with any other third party.</p>
+  <p>The extension communicates with the following services:</p>
+  <p><strong>Lightspeed Commerce</strong> (<code>api.lightspeedapp.com</code>, <code>cloud.lightspeedapp.com</code>) — to fetch your workorder data and authenticate your account.</p>
+  <p><strong>Cloudflare Workers</strong> (<code>ls-oauth-proxy.ls-proxy.workers.dev</code>) — operated by the extension developer to securely handle OAuth token exchange. Only authorization codes and refresh tokens are sent to this service; no business data is transmitted.</p>
+  <p>No data is shared with any other third party.</p>
 
   <h2>Contact</h2>
-  <p>If you have questions about this privacy policy, contact us at calendarlightspeed@gmail.com.</p>
+  <p>If you have questions about this privacy policy, contact us at <a href="mailto:calendarlightspeed@gmail.com">calendarlightspeed@gmail.com</a>.</p>
 </body>
 </html>
