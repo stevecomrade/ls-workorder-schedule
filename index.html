@@ -3,246 +3,439 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lightspeed Retail Workorder Schedule</title>
+  <title>Workorder Schedule for Lightspeed R-Series</title>
+  <meta name="description" content="See your upcoming Lightspeed R-Series workorder schedule at a glance. Day-by-day calendar with traffic light counts, status colors, line totals, and store credit alerts.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f8fafc;
-      color: #1e293b;
-      line-height: 1.6;
+    :root {
+      --bg: #0e0e12;
+      --surface: #16161d;
+      --surface-2: #1e1e28;
+      --border: #2a2a36;
+      --text: #e8e8ec;
+      --text-muted: #8a8a9a;
+      --accent: #E8503A;
+      --accent-glow: rgba(232, 80, 58, 0.15);
+      --green: #10b981;
+      --yellow: #eab308;
+      --red: #dc2626;
     }
 
-    header {
-      background: #1a1a2e;
-      color: #fff;
-      padding: 60px 24px;
-      text-align: center;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Source Sans 3', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
-    header h1 {
-      font-size: 36px;
-      font-weight: 800;
-      margin-bottom: 12px;
-      letter-spacing: -0.5px;
-    }
-    header p {
-      font-size: 18px;
-      color: #94a3b8;
-      max-width: 560px;
-      margin: 0 auto 32px;
-    }
-    .header-badges {
+
+    /* ── Hero ──────────────────────────────────────── */
+    .hero {
+      min-height: 90vh;
       display: flex;
-      gap: 12px;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      flex-wrap: wrap;
+      text-align: center;
+      padding: 60px 24px;
+      position: relative;
+      overflow: hidden;
     }
-    .badge {
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 14px;
+      padding: 6px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 13px;
       font-weight: 600;
-      text-decoration: none;
-      transition: background 0.15s;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      position: relative;
     }
-    .badge:hover { background: rgba(255,255,255,0.2); }
-    .badge-icon { font-size: 18px; }
+    .hero-badge .dot {
+      width: 7px; height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+    }
 
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(48px, 8vw, 88px);
+      line-height: 0.95;
+      letter-spacing: 2px;
+      color: #fff;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    h1 span { color: var(--accent); }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 540px;
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+
+    .install-buttons {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    .btn-firefox {
+      background: #ff7139;
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(255, 113, 57, 0.3);
+    }
+    .btn-firefox:hover { box-shadow: 0 6px 28px rgba(255, 113, 57, 0.45); }
+
+    .btn-chrome {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-chrome:hover { background: var(--border); }
+
+    /* ── Screenshots ──────────────────────────────── */
+    .hero-screens {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 1100px;
+      position: relative;
+    }
+
+    .screen {
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+      overflow: hidden;
+      background: var(--surface);
+    }
+    .screen img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .screen-main { max-width: 600px; }
+    .screen-side { max-width: 340px; }
+
+    /* ── Features ─────────────────────────────────── */
     .features {
-      max-width: 900px;
-      margin: 60px auto;
-      padding: 0 24px;
+      padding: 100px 24px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 14px;
+      letter-spacing: 4px;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px, 5vw, 52px);
+      color: #fff;
+      letter-spacing: 1px;
+      margin-bottom: 48px;
+      line-height: 1;
+    }
+
+    .feature-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
+      gap: 20px;
     }
-    .feature {
-      background: #fff;
-      border-radius: 12px;
-      padding: 28px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    }
-    .feature-icon { font-size: 32px; margin-bottom: 12px; }
-    .feature h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-    .feature p { font-size: 14px; color: #64748b; }
 
-    .setup {
-      background: #fff;
-      max-width: 700px;
-      margin: 0 auto 60px;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-      margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 60px;
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 28px 24px;
+      transition: border-color 0.2s;
     }
-    .setup h2 { font-size: 24px; font-weight: 700; margin-bottom: 24px; text-align: center; }
+    .feature-card:hover { border-color: var(--accent); }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .fi-calendar  { background: rgba(232,80,58,0.12); }
+    .fi-traffic   { background: rgba(234,179,8,0.12); }
+    .fi-credit    { background: rgba(16,185,129,0.12); }
+    .fi-status    { background: rgba(139,92,246,0.12); }
+    .fi-lines     { background: rgba(59,130,246,0.12); }
+    .fi-secure    { background: rgba(232,80,58,0.12); }
+
+    .feature-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── Highlight screenshot ─────────────────────── */
+    .highlight-section {
+      padding: 0 24px 100px;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .highlight-section .screen {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    .highlight-caption {
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* ── Setup ────────────────────────────────────── */
+    .setup {
+      padding: 80px 24px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .steps {
+      counter-reset: step;
+    }
     .step {
       display: flex;
-      gap: 16px;
-      margin-bottom: 24px;
+      gap: 20px;
+      margin-bottom: 32px;
       align-items: flex-start;
     }
     .step-num {
-      width: 32px;
-      height: 32px;
-      background: #1a1a2e;
+      counter-increment: step;
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
       color: #fff;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+    }
+    .step-num::after { content: counter(step); }
+    .step-body h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .step-body p {
       font-size: 14px;
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .step-content h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-    .step-content p { font-size: 14px; color: #64748b; }
-    .step-content code {
-      background: #f1f5f9;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 12px;
-      color: #0f3460;
+      color: var(--text-muted);
+      line-height: 1.6;
     }
 
-    .faq {
-      max-width: 700px;
-      margin: 0 auto 60px;
-      padding: 0 24px;
-    }
-    .faq h2 { font-size: 24px; font-weight: 700; margin-bottom: 24px; text-align: center; }
-    .faq-item { margin-bottom: 20px; }
-    .faq-item h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-    .faq-item p { font-size: 14px; color: #64748b; }
-
+    /* ── Footer ───────────────────────────────────── */
     footer {
-      background: #1a1a2e;
-      color: #94a3b8;
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
       text-align: center;
-      padding: 32px 24px;
       font-size: 13px;
+      color: var(--text-muted);
     }
-    footer a { color: #94a3b8; }
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    footer a:hover { color: var(--accent); }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
 
-    .section-title {
-      text-align: center;
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 32px;
-      padding: 0 24px;
+    /* ── Responsive ───────────────────────────────── */
+    @media (max-width: 700px) {
+      .hero-screens { flex-direction: column; align-items: center; }
+      .screen-main, .screen-side { max-width: 100%; }
+      .install-buttons { flex-direction: column; align-items: center; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>📅 Workorder Schedule</h1>
-    <p>See your entire Lightspeed Retail workorder calendar at a glance — without leaving the workorder screen.</p>
-    <div class="header-badges">
-      <a class="badge" href="https://addons.mozilla.org" target="_blank">
-        <span class="badge-icon">🦊</span> Firefox Add-on
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      v1.4.0 — Now on Firefox
+    </div>
+
+    <h1>Workorder<br><span>Schedule</span></h1>
+
+    <p class="hero-sub">
+      See your upcoming Lightspeed R-Series workorder schedule at a glance.
+      Traffic light counts, status colors, line totals, and store credit alerts — right from any workorder screen.
+    </p>
+
+    <div class="install-buttons">
+      <a href="https://addons.mozilla.org/en-US/firefox/addon/workorder-schedule-lightspeed/" class="btn btn-firefox">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.452 3.445a11.002 11.002 0 00-4.797-2.637 11.063 11.063 0 00-4.18-.248C8.32.933 5.486 2.597 3.66 5.253c.196-.376.577-.974.786-1.254a8.997 8.997 0 013.742-2.9c-.784.32-1.536.792-2.208 1.39.156-.105.474-.3.636-.387a9.065 9.065 0 015.983-1.158 8.985 8.985 0 017.46 4.976c-.46-1.14-1.29-2.26-1.88-2.82.372.502.87 1.313 1.107 1.78A9.08 9.08 0 0121 12.028a8.974 8.974 0 01-2.065 5.784 9.037 9.037 0 01-5.167 3.178 8.991 8.991 0 01-6.036-.785 8.964 8.964 0 01-4.108-4.67 8.943 8.943 0 01-.335-4.482c.178.47.533 1.18.784 1.57a6.918 6.918 0 00-.074 1.898 7.047 7.047 0 002.064 4.292 7.005 7.005 0 004.089 2.046 7.063 7.063 0 004.578-.604 6.992 6.992 0 003.273-3.226 6.939 6.939 0 00.354-4.584 6.96 6.96 0 00-2.36-3.828 6.944 6.944 0 00-4.29-1.604c.336.004.987.1 1.33.182a5.014 5.014 0 013.242 2.16 4.976 4.976 0 01.672 3.804A4.996 4.996 0 0114.882 17a5.018 5.018 0 01-3.878.123 5.006 5.006 0 01-2.964-2.622A4.98 4.98 0 017.77 10.5a4.978 4.978 0 012.87-2.746 5.014 5.014 0 013.983-.262c-.53-.262-1.522-.505-2.106-.508-1.4.004-2.492.277-3.628 1.097l-.007.005c.168-.37.682-1.154.948-1.444a6.983 6.983 0 012.322-1.66 6.946 6.946 0 012.756-.71c-.548-.048-1.636.004-2.178.1a9.036 9.036 0 00-5.623 3.408 8.969 8.969 0 00-1.73 5.804c.074-.432.306-1.248.468-1.656A7.009 7.009 0 009.4 18.55a7.026 7.026 0 005.296.754A7.04 7.04 0 0019.24 16a6.98 6.98 0 001.14-5.412c.01.328-.04 1.014-.103 1.342a9.037 9.037 0 01-3.463 5.348 9.002 9.002 0 01-6.095 1.903 8.966 8.966 0 01-5.666-2.905 9.017 9.017 0 01-2.282-5.932l-.08.108A11.065 11.065 0 004.96 20.496a11.017 11.017 0 007.011 2.983 10.984 10.984 0 006.789-2.543 11.033 11.033 0 003.823-6.283 11.064 11.064 0 00-.467-6.103c-.65-1.89-1.76-3.4-3.18-4.708l.01.008c.306.383.775 1.12.998 1.56a10.2 10.2 0 00-2.49-3.44c.504.453 1.136 1.209 1.474 1.72A11.04 11.04 0 0020.452 3.445z"/></svg>
+        Install for Firefox
       </a>
-      <a class="badge" href="https://chrome.google.com/webstore" target="_blank">
-        <span class="badge-icon">🌐</span> Chrome Extension
+      <a href="#" class="btn btn-chrome" title="Coming soon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.66 5h5.27a4 4 0 016.78 0h5.27A10 10 0 0012 2zm0 6a4 4 0 100 8 4 4 0 000-8zm-8.66 7A10 10 0 0012 22a10 10 0 008.66-7H12a4 4 0 01-3.46-2H3.34z" opacity=".6"/></svg>
+        Chrome — Coming Soon
       </a>
     </div>
-  </header>
 
-  <div class="features">
-    <div class="feature">
-      <div class="feature-icon">📆</div>
-      <h3>Day-by-Day Calendar</h3>
-      <p>See all open workorders organized by due date across 7, 14, or 21 days — right inside Lightspeed.</p>
+    <div class="hero-screens">
+      <div class="screen screen-main">
+        <img src="full_screen_preview_blurredresized.jpg" alt="Workorder Schedule panel open alongside a Lightspeed workorder, showing calendar view and store credit banner" loading="lazy">
+      </div>
+      <div class="screen screen-side">
+        <img src="wo_schedule_cal_view_sized.jpg" alt="Calendar view with traffic light count badges per day" loading="lazy">
+      </div>
     </div>
-    <div class="feature">
-      <div class="feature-icon">🚦</div>
-      <h3>Traffic Light Badges</h3>
-      <p>Green, yellow, and red count badges show at a glance which days are light, moderate, or overloaded.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">💳</div>
-      <h3>Store Credit Alerts</h3>
-      <p>A prominent banner appears on any workorder where the customer has a store credit balance on account.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">🔧</div>
-      <h3>Estimate Totals</h3>
-      <p>Expand any day to see line counts and estimated totals for each workorder — no extra clicks needed.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">🎨</div>
-      <h3>Status Color Coding</h3>
-      <p>Workorder cards show your actual Lightspeed status colors, automatically synced from your account.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">⚙️</div>
-      <h3>Configurable Filters</h3>
-      <p>Choose which statuses to hide from the calendar — tailor it to your shop's workflow.</p>
-    </div>
-  </div>
+  </section>
 
-  <div style="max-width:700px;margin:0 auto 40px;padding:0 24px;">
-    <h2 class="section-title">Setup in 3 Steps</h2>
-    <div class="setup">
+  <!-- Features -->
+  <section class="features">
+    <div class="section-label">FEATURES</div>
+    <h2>Everything you need,<br>nothing you don't</h2>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon fi-calendar">📅</div>
+        <h3>Day-by-Day Calendar</h3>
+        <p>See your workorder schedule for the next 7, 14, or 21 days. Expandable day rows show individual workorders with customer names and dates.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-traffic">🚦</div>
+        <h3>Traffic Light Badges</h3>
+        <p>Green, yellow, and red count badges tell you at a glance which days are manageable and which are stacked. Thresholds are fully configurable.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-credit">💳</div>
+        <h3>Store Credit Alerts</h3>
+        <p>A banner appears automatically on any workorder where the customer has store credit on their account. Never miss a balance again.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-status">🏷️</div>
+        <h3>Status Colors</h3>
+        <p>Each workorder card shows its status with your shop's custom colors pulled directly from Lightspeed. Syncs automatically.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-lines">📋</div>
+        <h3>Line Counts & Totals</h3>
+        <p>Expand a day to see how many line items and the dollar total on each workorder — no clicking into every WO individually.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-secure">🔒</div>
+        <h3>Secure OAuth</h3>
+        <p>Connects to Lightspeed via OAuth with credentials secured server-side. Your API secret never touches the browser.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Store Credit Highlight -->
+  <section class="highlight-section">
+    <div class="screen">
+      <img src="highlights.jpg" alt="Store Credit on Account banner shown on a workorder page with $500 balance" loading="lazy">
+    </div>
+    <p class="highlight-caption">Store credit banner appears automatically when a customer has a balance on file.</p>
+  </section>
+
+  <!-- Setup -->
+  <section class="setup">
+    <div class="section-label">GETTING STARTED</div>
+    <h2>Up and running in 2 minutes</h2>
+
+    <div class="steps">
       <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-content">
-          <h4>Install the extension</h4>
-          <p>Install from the Firefox Add-ons store or Chrome Web Store. No account needed — just click install.</p>
+        <div class="step-num"></div>
+        <div class="step-body">
+          <h3>Install the extension</h3>
+          <p>Grab it from the Firefox Add-ons store (Chrome coming soon). Click the extension icon in your toolbar to open settings.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-content">
-          <h4>Enter your Lightspeed Account ID</h4>
-          <p>Click the extension icon and enter your Account ID. In Lightspeed, click <strong>Help</strong> in the bottom-left corner of any screen. Your Account ID is shown in the panel that opens.</p>
+        <div class="step-num"></div>
+        <div class="step-body">
+          <h3>Enter your Account ID</h3>
+          <p>In Lightspeed, click <strong>Help</strong> in the bottom-left corner — your Account ID is shown in the panel that opens. Paste it into the extension popup.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-content">
-          <h4>Authorize with Lightspeed</h4>
-          <p>Click "Authorize with Lightspeed", approve the connection, copy the code from the page you land on, paste it back into the extension, and click Complete Setup. You're done.</p>
+        <div class="step-num"></div>
+        <div class="step-body">
+          <h3>Authorize with Lightspeed</h3>
+          <p>Click "Authorize with Lightspeed" and approve the connection. The extension handles the rest — your schedule appears on any workorder page.</p>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="faq">
-    <h2>FAQ</h2>
-    <div class="faq-item">
-      <h4>Is this free?</h4>
-      <p>Yes, completely free to use.</p>
-    </div>
-    <div class="faq-item">
-      <h4>Does it work with any Lightspeed R-Series account?</h4>
-      <p>Yes — it works with any Lightspeed Retail R-Series account. It does not work with X-Series or other Lightspeed products.</p>
-    </div>
-    <div class="faq-item">
-      <h4>Is my data secure?</h4>
-      <p>All data is processed locally in your browser. Nothing is sent to any third-party server. Your Lightspeed credentials are stored only in your browser's extension storage.</p>
-    </div>
-    <div class="faq-item">
-      <h4>Where do I find my Account ID?</h4>
-      <p>In Lightspeed, click <strong>Help</strong> in the bottom-left corner of any screen. Your Account ID is shown in the support panel that opens — it's typically a 5-6 digit number.</p>
-    </div>
-    <div class="faq-item">
-      <h4>What browsers are supported?</h4>
-      <p>Firefox and Chrome/Brave. Safari is not currently supported.</p>
-    </div>
-  </div>
-
+  <!-- Footer -->
   <footer>
-    <p>Workorder Schedule for Lightspeed Retail &nbsp;·&nbsp; <a href="privacy">Privacy Policy</a> &nbsp;·&nbsp; <a href="https://github.com/stevecomrade/ls-workorder-schedule">GitHub</a></p>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="https://addons.mozilla.org/en-US/firefox/addon/workorder-schedule-lightspeed/">Firefox Add-ons</a>
+      <a href="mailto:calendarlightspeed@gmail.com">Contact</a>
+    </div>
+    <p>Workorder Schedule for Lightspeed is not affiliated with Lightspeed Commerce Inc.</p>
   </footer>
 
 </body>
