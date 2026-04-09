@@ -2,329 +2,222 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Almost done! — Workorder Schedule</title>
+  <title>Workorder Schedule — Authorizing…</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f0f2f5;
-      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f4f4f0;
       padding: 24px;
     }
-
     .card {
       background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-      padding: 40px 36px;
-      max-width: 520px;
+      border-radius: 10px;
+      padding: 40px;
+      max-width: 480px;
       width: 100%;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
       text-align: center;
     }
-
-    .icon {
-      width: 64px;
-      height: 64px;
-      background: #22c55e;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      font-size: 32px;
-    }
-
-    h1 {
-      font-size: 26px;
-      font-weight: 700;
-      color: #111;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      font-size: 15px;
-      color: #555;
-      margin-bottom: 24px;
-      line-height: 1.5;
-    }
-
-    .code-box {
-      background: #f8f9fa;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 14px 16px;
+    .icon { font-size: 40px; margin-bottom: 16px; }
+    h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #111; }
+    p { font-size: 14px; color: #6b7280; line-height: 1.6; }
+    .error { color: #dc2626; }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 13px;
       font-family: monospace;
-      font-size: 15px;
-      color: #1a1a2e;
-      word-break: break-all;
-      text-align: left;
-      margin-bottom: 14px;
-      user-select: all;
+      margin: 12px 0;
+      box-sizing: border-box;
     }
-
-    .copy-btn {
+    button {
       background: #1a1a2e;
       color: #fff;
       border: none;
-      border-radius: 10px;
-      padding: 13px 28px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      margin-bottom: 8px;
-      transition: background 0.15s;
-    }
-    .copy-btn:hover { background: #2d2d4e; }
-    .copy-btn.copied { background: #22c55e; }
-
-    .copy-hint {
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 32px;
-    }
-
-    /* ── Step instructions ── */
-    .steps {
-      text-align: left;
-      border-top: 1px solid #e8e8e8;
-      padding-top: 28px;
-    }
-
-    .steps h2 {
-      font-size: 14px;
-      font-weight: 700;
-      color: #333;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 20px;
-    }
-
-    /* Step 1 — puzzle piece */
-    .step {
-      margin-bottom: 24px;
-    }
-
-    .step-label {
+      border-radius: 6px;
+      padding: 10px 20px;
       font-size: 13px;
       font-weight: 600;
-      color: #555;
-      margin-bottom: 10px;
+      cursor: pointer;
     }
+    .copied { background: #16a34a; }
 
-    /* Simulated browser toolbar showing puzzle piece */
+    .steps {
+      display: none;
+      text-align: left;
+      border-top: 1px solid #e8e8e8;
+      margin-top: 28px;
+      padding-top: 24px;
+    }
+    .steps-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #9ca3af;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+    .step { margin-bottom: 22px; }
+    .step-label { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 10px; }
+
     .browser-bar {
       background: #3c4043;
-      border-radius: 8px 8px 0 0;
-      padding: 8px 12px;
+      border-radius: 7px 7px 0 0;
+      padding: 7px 10px;
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 8px;
+      gap: 6px;
       position: relative;
     }
-
-    .browser-icon {
-      width: 20px;
-      height: 20px;
-      background: #8a8a8a;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      cursor: pointer;
-    }
-
-    .puzzle-icon {
+    .b-icon {
+      width: 22px; height: 22px;
       background: #5f6368;
-      position: relative;
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+    }
+    .browser-content {
+      background: #f3f4f6;
+      border-radius: 0 0 7px 7px;
+      height: 36px;
+      border: 1px solid #d1d5db;
+      border-top: none;
     }
 
-    /* Blinking arrow pointing at puzzle piece */
-    .arrow-container {
+    .arrow-wrap {
       position: absolute;
-      bottom: -38px;
+      bottom: -44px;
       right: 28px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      animation: blink 1s ease-in-out infinite;
+      animation: blink 0.9s ease-in-out infinite;
       pointer-events: none;
+    }
+    .arrow-up {
+      width: 0; height: 0;
+      border-left: 9px solid transparent;
+      border-right: 9px solid transparent;
+      border-bottom: 13px solid #ef4444;
+    }
+    .arrow-label {
+      background: #ef4444;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+
+    .popup-mock {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      overflow: visible;
+      background: #eef2f7;
+      padding: 14px;
+    }
+    .popup-header {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 12px;
+      font-size: 13px; font-weight: 700; color: #111;
+    }
+    .popup-section {
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      border: 1px solid #e5e7eb;
+    }
+    .popup-section.highlighted { border: 2px solid #ef4444; }
+    .popup-section-title {
+      font-size: 12px; font-weight: 700; color: #111;
+      display: flex; align-items: center; gap: 7px;
+      margin-bottom: 8px;
+    }
+    .badge {
+      background: #1a1a2e; color: #fff;
+      width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; flex-shrink: 0;
+    }
+    .popup-field {
+      border: 1px solid #d1d5db; border-radius: 5px;
+      padding: 7px 9px; font-size: 11px; color: #9ca3af;
+      background: #fff; margin-bottom: 7px;
+    }
+    .popup-field.paste-target {
+      border: 2px solid #ef4444;
+      background: #fff5f5;
+      position: relative;
+    }
+    .popup-btn-mock {
+      background: #1a1a2e; color: #fff;
+      border-radius: 6px; padding: 8px 12px;
+      font-size: 11px; font-weight: 600;
+      text-align: center; margin-bottom: 7px;
+    }
+
+    .paste-arrow {
+      position: absolute;
+      right: -90px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex; align-items: center; gap: 3px;
+      animation: blink 0.9s ease-in-out infinite;
+    }
+    .arrow-left {
+      width: 0; height: 0;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      border-right: 11px solid #ef4444;
+    }
+    .paste-label {
+      background: #ef4444; color: #fff;
+      font-size: 10px; font-weight: 700;
+      padding: 2px 6px; border-radius: 3px;
+      white-space: nowrap;
     }
 
     @keyframes blink {
       0%, 100% { opacity: 1; }
       50% { opacity: 0; }
     }
-
-    .arrow-up {
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-bottom: 14px solid #ef4444;
-    }
-
-    .arrow-label {
-      background: #ef4444;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 7px;
-      border-radius: 4px;
-      white-space: nowrap;
-      margin-top: 2px;
-    }
-
-    .browser-content {
-      background: #f8f9fa;
-      border-radius: 0 0 8px 8px;
-      height: 52px;
-      border: 1px solid #ddd;
-      border-top: none;
-    }
-
-    /* Step 2 — popup screenshot annotation */
-    .popup-preview {
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .popup-mock {
-      background: #eef2f7;
-      padding: 16px;
-    }
-
-    .popup-section {
-      background: #fff;
-      border-radius: 10px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
-    }
-
-    .popup-section-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: #111;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .step-badge {
-      background: #1a1a2e;
-      color: #fff;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-
-    .popup-field-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: #555;
-      margin-bottom: 4px;
-    }
-
-    .popup-field {
-      border: 2px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 8px 10px;
-      font-size: 12px;
-      color: #aaa;
-      background: #fff;
-      margin-bottom: 8px;
-      position: relative;
-    }
-
-    .popup-field.highlighted {
-      border-color: #ef4444;
-      background: #fff5f5;
-    }
-
-    .popup-btn {
-      background: #1a1a2e;
-      color: #fff;
-      border-radius: 7px;
-      padding: 9px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      text-align: center;
-      margin-bottom: 6px;
-    }
-
-    /* Blinking arrow pointing at paste field */
-    .paste-arrow {
-      position: absolute;
-      right: -10px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      align-items: center;
-      animation: blink 1s ease-in-out infinite;
-    }
-
-    .paste-arrow-left {
-      width: 0;
-      height: 0;
-      border-top: 8px solid transparent;
-      border-bottom: 8px solid transparent;
-      border-right: 12px solid #ef4444;
-    }
-
-    .paste-arrow-label {
-      background: #ef4444;
-      color: #fff;
-      font-size: 10px;
-      font-weight: 600;
-      padding: 2px 6px;
-      border-radius: 4px;
-      white-space: nowrap;
-    }
   </style>
 </head>
 <body>
   <div class="card">
+    <div class="icon" id="icon">⏳</div>
+    <h2 id="title">Completing authorization…</h2>
+    <p id="message">Please wait.</p>
+    <div id="manual-copy" style="display:none;">
+      <input type="text" id="code-display" readonly>
+      <button onclick="copyCode()" id="copy-btn">Copy Code</button>
+      <p style="margin-top:12px;font-size:12px;">Paste this into the extension popup's Authorization Code field.</p>
+    </div>
 
-    <!-- Success icon -->
-    <div class="icon">✓</div>
-    <h1>Almost done!</h1>
-    <p class="subtitle">Copy this authorization code and paste it into the extension popup.</p>
+    <div class="steps" id="steps">
+      <div class="steps-title">Then follow these steps</div>
 
-    <!-- Code display -->
-    <div class="code-box" id="codeBox">Loading…</div>
-    <button class="copy-btn" id="copyBtn" onclick="copyCode()">Copy Code</button>
-    <p class="copy-hint">Paste this into the extension popup's Authorization Code field</p>
-
-    <!-- Step instructions -->
-    <div class="steps">
-      <h2>Next steps</h2>
-
-      <!-- Step 1: click puzzle piece -->
       <div class="step">
-        <div class="step-label">① Click the puzzle piece icon in your browser toolbar</div>
-        <div style="position:relative;padding-bottom:48px;">
+        <div class="step-label">① Click the 🧩 puzzle piece in your browser toolbar</div>
+        <div style="position:relative;padding-bottom:50px;">
           <div class="browser-bar">
-            <div class="browser-icon">⬇</div>
-            <div class="browser-icon">★</div>
-            <div class="browser-icon puzzle-icon">🧩</div>
-            <div class="browser-icon">⋮</div>
-            <div class="arrow-container">
+            <div class="b-icon">⬇</div>
+            <div class="b-icon">★</div>
+            <div class="b-icon">🧩</div>
+            <div class="b-icon">⋮</div>
+            <div class="arrow-wrap">
               <div class="arrow-up"></div>
               <div class="arrow-label">Click here</div>
             </div>
@@ -333,80 +226,70 @@
         </div>
       </div>
 
-      <!-- Step 2: paste into popup -->
       <div class="step">
-        <div class="step-label">② Find Workorder Schedule and paste the code</div>
-        <div class="popup-preview">
-          <div class="popup-mock">
+        <div class="step-label">② Open Workorder Schedule and paste the code</div>
+        <div class="popup-mock">
+          <div class="popup-header">🗓 Workorder Schedule</div>
 
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:4px 0;">
-              <span style="font-size:18px;">🗓</span>
-              <span style="font-size:14px;font-weight:700;color:#111;">Workorder Schedule</span>
-            </div>
+          <div class="popup-section" style="opacity:0.45;">
+            <div class="popup-section-title"><div class="badge">1</div> Enter your Account ID</div>
+            <div class="popup-field" style="color:#ccc;">e.g. 12345</div>
+            <div class="popup-btn-mock">Save Account ID</div>
+          </div>
 
-            <div class="popup-section">
-              <div class="popup-section-title">
-                <div class="step-badge">1</div>
-                Enter your Account ID
+          <div class="popup-section highlighted" style="padding-right:96px;overflow:visible;position:relative;">
+            <div class="popup-section-title"><div class="badge">2</div> Connect to Lightspeed</div>
+            <div class="popup-btn-mock">Open Lightspeed Authorization</div>
+            <div style="font-size:10px;font-weight:600;color:#555;margin-bottom:4px;">Authorization Code</div>
+            <div class="popup-field paste-target">
+              Paste code from callback page
+              <div class="paste-arrow">
+                <div class="arrow-left"></div>
+                <div class="paste-label">Paste here</div>
               </div>
-              <div class="popup-field-label">Account ID</div>
-              <div class="popup-field" style="color:#ccc;">e.g. 12345</div>
-              <div class="popup-btn">Save Account ID</div>
             </div>
-
-            <div class="popup-section" style="border:2px solid #ef4444;">
-              <div class="popup-section-title">
-                <div class="step-badge">2</div>
-                Connect to Lightspeed
-              </div>
-              <div style="font-size:11px;color:#555;margin-bottom:10px;">Click below to open Lightspeed authorization. Approve the connection, copy the code you receive, and paste it below.</div>
-              <div class="popup-btn">Open Lightspeed Authorization</div>
-              <div class="popup-field-label">Authorization Code</div>
-              <div class="popup-field highlighted" style="position:relative;">
-                Paste code from callback page
-                <div class="paste-arrow">
-                  <div class="paste-arrow-left"></div>
-                  <div class="paste-arrow-label">Paste here</div>
-                </div>
-              </div>
-              <div class="popup-btn" style="background:#22c55e;">Complete Setup</div>
-            </div>
-
+            <div class="popup-btn-mock" style="background:#16a34a;">Complete Setup</div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
   <script>
-    // Extract code from URL
-    function getCode() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('code') || '';
+    const params = new URLSearchParams(window.location.search);
+    const code   = params.get('code');
+    const error  = params.get('error');
+
+    if (error) {
+      document.getElementById('icon').textContent    = '❌';
+      document.getElementById('title').textContent   = 'Authorization Failed';
+      document.getElementById('message').textContent = error;
+      document.getElementById('message').className   = 'error';
+    } else if (code) {
+      document.getElementById('icon').textContent    = '✅';
+      document.getElementById('title').textContent   = 'Almost done!';
+      document.getElementById('message').textContent = 'Copy this authorization code and paste it into the extension popup:';
+      showManualEntry(code);
+    } else {
+      document.getElementById('icon').textContent    = '⏳';
+      document.getElementById('title').textContent   = 'Waiting…';
+      document.getElementById('message').textContent = 'This page is the OAuth callback for the Lightspeed Workorder Schedule extension.';
     }
 
-    const code = getCode();
-    document.getElementById('codeBox').textContent = code || 'No code found — please try authorizing again.';
+    function showManualEntry(code) {
+      document.getElementById('code-display').value = code;
+      document.getElementById('manual-copy').style.display = 'block';
+      document.getElementById('steps').style.display = 'block';
+    }
 
     function copyCode() {
-      if (!code) return;
-      navigator.clipboard.writeText(code).then(() => {
-        const btn = document.getElementById('copyBtn');
-        btn.textContent = '✓ Copied!';
-        btn.classList.add('copied');
-        setTimeout(() => {
-          btn.textContent = 'Copy Code';
-          btn.classList.remove('copied');
-        }, 2000);
-      }).catch(() => {
-        // Fallback: select the text
-        const box = document.getElementById('codeBox');
-        const range = document.createRange();
-        range.selectNodeContents(box);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-      });
+      const input = document.getElementById('code-display');
+      input.select();
+      document.execCommand('copy');
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = '✓ Copied!';
+      btn.className = 'copied';
+      setTimeout(() => { btn.textContent = 'Copy Code'; btn.className = ''; }, 2500);
     }
   </script>
 </body>
