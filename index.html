@@ -162,13 +162,34 @@
       text-decoration: none;
       border-radius: 6px;
       font-weight: 600;
-      transition: background 0.3s;
+      transition: all 0.3s;
       border: none;
       cursor: pointer;
     }
 
     .btn:hover {
       background: #1a1a2e;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-chrome {
+      background: linear-gradient(135deg, #4285f4 0%, #ea4335 25%, #fbbc04 50%, #34a853 75%, #4285f4 100%);
+      background-size: 300% 300%;
+    }
+
+    .btn-chrome:hover {
+      background-position: 100% 0;
+      box-shadow: 0 6px 16px rgba(66, 133, 244, 0.4);
+    }
+
+    .btn-firefox {
+      background: linear-gradient(135deg, #ff9500 0%, #ff6200 100%);
+    }
+
+    .btn-firefox:hover {
+      background: linear-gradient(135deg, #ffaa00 0%, #ff7300 100%);
+      box-shadow: 0 6px 16px rgba(255, 149, 0, 0.4);
     }
 
     .btn-secondary {
@@ -322,6 +343,10 @@
   <header>
     <h1>📅 Workorder Schedule for Lightspeed</h1>
     <p>Browser extension for Lightspeed R-Series Retail POS — View upcoming workorders at a glance with automatic deposit handling.</p>
+    <div class="button-group" style="margin-top: 25px; justify-content: center;">
+      <a href="https://chromewebstore.google.com/detail/workorder-schedule-for-li/niiidncbbbaejfejcgaehdboilojapgh" class="btn btn-chrome" target="_blank">📦 Install from Chrome Web Store</a>
+      <a href="https://addons.mozilla.org/en-US/firefox/addon/workorder-schedule-lightspeed/" class="btn btn-firefox" target="_blank">🦊 Install from Firefox Add-ons</a>
+    </div>
   </header>
 
   <div class="container">
@@ -494,8 +519,8 @@
       </div>
 
       <div class="screenshot">
-        <img src="Payment_screen_1.png" alt="Payment checkout screen with automatic deposit applied">
-        <p>Deposit automatically applied during checkout (when enabled in Settings)</p>
+        <img src="Payment_screen_1.png" alt="Payment checkout screen with card button disabled and other payments defaulted">
+        <p>Card button disabled, Other Payments defaulted to apply deposit at next screen</p>
       </div>
 
       <div class="screenshot">
