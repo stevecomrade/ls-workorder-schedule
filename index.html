@@ -342,7 +342,7 @@
       <div class="feature-grid">
         <div class="feature-card">
           <h4>📅 Customizable Schedule View</h4>
-          <p>See your workorder calendar for the next <strong>21, 30, or 90 days</strong>. Toggle between views to match your scheduling horizon. Choose the range that works best for your shop's workflow.</p>
+          <p>See your workorder calendar for the next <strong>21, 30, or 90 days</strong>. Toggle between views to match your scheduling horizon. Search the calendar to find specific workorders by customer name, order number, or notes. Choose the range that works best for your shop's workflow.</p>
         </div>
 
         <div class="feature-card">
@@ -399,7 +399,7 @@
 
         <div class="feature-card">
           <h4>Deposit Workflow</h4>
-          <p>Enable or disable automatic deposit application at checkout. Useful if you prefer manual control over when deposits are applied.</p>
+          <p>Enable or disable automatic deposit application at checkout. Perfect if you prefer manual control or if the feature needs to be temporarily disabled. No need to uninstall—just toggle it off and back on anytime.</p>
         </div>
 
         <div class="feature-card">
@@ -423,7 +423,21 @@
     <section id="installation">
       <h2>📦 Installation</h2>
 
+      <div class="button-group" style="margin-bottom: 30px;">
+        <a href="https://chromewebstore.google.com/detail/workorder-schedule-for-li/niiidncbbbaejfejcgaehdboilojapgh" class="btn" target="_blank">📦 Install from Chrome Web Store</a>
+        <a href="https://addons.mozilla.org/en-US/firefox/addon/workorder-schedule-lightspeed/" class="btn" target="_blank">🦊 Install from Firefox Add-ons</a>
+      </div>
+
       <h3>Chrome</h3>
+      <p>Install from the <a href="https://chromewebstore.google.com/detail/workorder-schedule-for-li/niiidncbbbaejfejcgaehdboilojapgh" style="color: #3b82f6;">Chrome Web Store</a> for automatic updates and easy installation.</p>
+
+      <h3>Firefox</h3>
+      <p>Install from <a href="https://addons.mozilla.org/en-US/firefox/addon/workorder-schedule-lightspeed/" style="color: #3b82f6;">Firefox Add-ons</a> for automatic updates and easy installation.</p>
+
+      <h3>Manual Installation (Developer)</h3>
+      <p>If you want to load the extension manually for development:</p>
+
+      <h4 style="margin-top: 15px;">Chrome (Developer Mode)</h4>
       <ol style="margin-left: 20px; margin-bottom: 20px;">
         <li style="margin: 10px 0;">Go to <code style="background: #f0f0f0; padding: 2px 6px;">chrome://extensions</code></li>
         <li style="margin: 10px 0;">Enable <strong>Developer mode</strong> (top-right toggle)</li>
@@ -431,7 +445,7 @@
         <li style="margin: 10px 0;">Select the <code style="background: #f0f0f0; padding: 2px 6px;">lightspeed-schedule</code> folder</li>
       </ol>
 
-      <h3>Firefox</h3>
+      <h4>Firefox (Temporary Add-on)</h4>
       <ol style="margin-left: 20px; margin-bottom: 20px;">
         <li style="margin: 10px 0;">Go to <code style="background: #f0f0f0; padding: 2px 6px;">about:debugging#/runtime/this-firefox</code></li>
         <li style="margin: 10px 0;">Click <strong>Load Temporary Add-on</strong></li>
@@ -439,7 +453,7 @@
       </ol>
 
       <div class="toggle-note">
-        <strong>Note:</strong> Firefox temporary add-ons are removed on browser restart. For permanent install, the extension needs to be signed via <a href="https://addons.mozilla.org/en-US/developers/" style="color: #3b82f6;">Mozilla Add-on Developer Hub</a>.
+        <strong>Note:</strong> Firefox temporary add-ons are removed on browser restart. For development, use the browser console and reload the extension manually.
       </div>
     </section>
 
@@ -483,6 +497,11 @@
         <img src="Payment_screen_1.png" alt="Payment checkout screen with automatic deposit applied">
         <p>Deposit automatically applied during checkout (when enabled in Settings)</p>
       </div>
+
+      <div class="screenshot">
+        <img src="payment screen2.png" alt="Payment workflow with deposit and alternative payment methods">
+        <p>Deposit applied and alternative payment methods activated to cover remaining balance</p>
+      </div>
     </section>
 
     <!-- Release Notes Section -->
@@ -505,7 +524,13 @@
         </ul>
 
         <h3>What's Different</h3>
-        <p>Previously, you had to manually click the "Max" button to apply deposits at checkout. Now it happens automatically when the payment form loads. If you prefer the old behavior, simply toggle off "Deposit Workflow" in Settings.</p>
+        <p>The payment checkout flow has been significantly improved:</p>
+        <ul class="version-list">
+          <li><strong>Card button is now disabled</strong> — Previously, the Card payment button would process payments without applying customer deposits. This button now hides automatically to prevent accidentally bypassing the deposit.</li>
+          <li><strong>Automatic deposit application</strong> — The extension automatically applies available customer deposits and activates alternative payment methods (like Other payments) to cover the remaining balance.</li>
+          <li><strong>One-click workflow</strong> — You no longer need to manually click "Max" to apply deposits. It happens automatically when the payment form loads.</li>
+          <li><strong>Fully optional</strong> — If you find this feature buggy or prefer manual control, simply toggle off "Deposit Workflow" in Settings. You can re-enable it anytime without uninstalling.</li>
+        </ul>
 
         <h3>Testing</h3>
         <ul class="version-list">
